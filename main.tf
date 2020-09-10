@@ -13,11 +13,11 @@ data "google_compute_network" "default" {
 
 resource "google_compute_instance" "tfe" {
   name         = "tfe"
-  machine_type = "n1-standard-2"
+  machine_type = "n1-standard-8"
   zone         = "europe-west3-a"
   hostname     = "tfe.msk.pub"
 
-#  tags = ["tfe", "manual"]
+  tags = ["tfe", "manual"]
 
   boot_disk {
     initialize_params {
