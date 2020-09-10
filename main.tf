@@ -3,7 +3,7 @@ variable "project" {
 }
 
 provider "google" {
-#  credentials = file("~/.config/gcloud/application_default_credentials.json")
+##  credentials = file("~/.config/gcloud/application_default_credentials.json")
   project     = var.project
 }
 
