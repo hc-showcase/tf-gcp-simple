@@ -3,7 +3,7 @@ variable "project" {
 }
 
 provider "google" {
-#  credentials = file("~/.config/gcloud/application_default_credentials.json")
+##  credentials = file("~/.config/gcloud/application_default_credentials.json")
   project     = var.project
 }
 
@@ -38,6 +38,16 @@ resource "google_compute_instance" "vm" {
   service_account {
     scopes = ["userinfo-email", "compute-ro", "storage-ro"]
   }
+}
+
+resource "google_storage_bucket_access_control" "public_rule" {
+  bucket = google_storage_bucket.bucket.name
+  role   = "READER"
+  entity = "allUsers"
+}
+
+resource "google_storage_bucket" "bucket" {
+  name = "static-content-bucket-asd-123"
 }
 
 output "vm" {
