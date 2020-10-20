@@ -11,13 +11,13 @@ data "google_compute_network" "default" {
   name = "default"
 }
 
-resource "google_compute_instance" "tfe" {
-  name         = "tfe-0815"
+resource "google_compute_instance" "vm" {
+  name         = "vm0815"
   machine_type = "n1-standard-1"
   zone         = "europe-west3-a"
-  hostname     = "blub.msk.pub"
+  hostname     = "vm0815.msk.pub"
 
-  tags = ["tfe", "manual"]
+  tags = ["vm0815", "manual"]
 
   boot_disk {
     initialize_params {
@@ -40,6 +40,6 @@ resource "google_compute_instance" "tfe" {
   }
 }
 
-output "tfe" {
-  value = google_compute_instance.tfe
+output "vm" {
+  value = google_compute_instance.vm
 }
