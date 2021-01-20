@@ -13,7 +13,7 @@ data "google_compute_network" "default" {
 
 resource "google_compute_instance" "vm" {
   name         = "vm0815"
-  machine_type = "n1-standard-2"
+  machine_type = "n1-standard-4"
   zone         = "europe-west3-a"
   hostname     = "vm0815.msk.pub"
 
