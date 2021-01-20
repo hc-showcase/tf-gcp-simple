@@ -13,7 +13,7 @@ data "google_compute_network" "default" {
 
 resource "google_compute_instance" "vm" {
   name         = "vm0815"
-  machine_type = "n1-standard-1"
+  machine_type = "n1-standard-8"
   zone         = "europe-west3-a"
   hostname     = "vm0815.msk.pub"
 
@@ -47,7 +47,7 @@ resource "google_storage_bucket_access_control" "public_rule" {
 }
 
 resource "google_storage_bucket" "bucket" {
-  name = "static-content-bucket-asd-123"
+  name = "static-content-bucket-msk-0815"
 }
 
 output "vm" {
