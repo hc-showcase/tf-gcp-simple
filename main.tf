@@ -7,9 +7,8 @@ provider "google" {
   project     = "msk-pub"
 }
 
-resource "google_compute_network" "example_network" {
-  name                    = "example-network"
-  auto_create_subnetworks = "true"
+data "google_compute_network" "example_network" {
+  name                    = "default"
 }
 
 resource "google_compute_instance" "vm" {
@@ -29,7 +28,7 @@ resource "google_compute_instance" "vm" {
   }
 
   network_interface {
-    network = google_compute_network.example_network.name
+    network = data.google_compute_network.example_network.name
 
     access_config {
       // Ephemeral IP
@@ -49,7 +48,7 @@ EOT
 
 resource "google_compute_firewall" "default" {
   name    = "firewall"
-  network = google_compute_network.example_network.name
+  network = data.google_compute_network.example_network.name
 
   allow {
     protocol = "icmp"
@@ -60,7 +59,6 @@ resource "google_compute_firewall" "default" {
     ports    = ["${var.server_port}"]
   }
 
-  source_tags = ["web"]
   target_tags = ["web"]
 }
 
@@ -75,7 +73,7 @@ resource "google_storage_bucket" "bucket" {
   location = "EU"
 }
 
-output "vm" {
+output "ip" {
   value = google_compute_instance.vm.network_interface[0].access_config[0].nat_ip
   sensitive = true
 }
