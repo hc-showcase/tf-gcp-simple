@@ -82,7 +82,6 @@ resource "google_storage_bucket" "bucket" {
   location = "EU"
 }
 
-output "ip" {
-  value = google_compute_instance.vm.network_interface[0].access_config[0].nat_ip
-  sensitive = true
+output "web" {
+  value = "${google_compute_instance.vm.network_interface[0].access_config[0].nat_ip}:${var.server_port}"
 }
