@@ -68,7 +68,6 @@ resource "google_compute_firewall" "default" {
     ports    = ["${var.server_port}"]
   }
   
-  source_tags = ["default"]
   target_tags = ["web"]
 }
 
