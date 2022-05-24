@@ -16,8 +16,8 @@ provider "google" {
   project     = "msk-pub"
 }
 
-data "google_compute_network" "example_network" {
-  name                    = "default"
+data "google_compute_network" "default" {
+  name = "default"
 }
 
 resource "google_compute_instance" "vm" {
@@ -37,7 +37,7 @@ resource "google_compute_instance" "vm" {
   }
 
   network_interface {
-    network = data.google_compute_network.example_network.name
+    network = data.google_compute_network.default.name
 
     access_config {
       // Ephemeral IP
@@ -57,7 +57,7 @@ EOT
 
 resource "google_compute_firewall" "default" {
   name    = "firewall"
-  network = data.google_compute_network.example_network.name
+  network = data.google_compute_network.default.name
 
   allow {
     protocol = "icmp"
