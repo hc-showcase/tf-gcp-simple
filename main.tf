@@ -46,7 +46,7 @@ resource "google_compute_instance" "vm" {
   
   metadata_startup_script = <<EOT
 #!/bin/bash
-echo "Hello, World!" > index.html
+echo "Hello, Roche!" > index.html
 nohup busybox httpd -f -p ${var.server_port} &
 EOT
 
