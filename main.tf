@@ -71,15 +71,10 @@ resource "google_compute_firewall" "default" {
   target_tags = ["web"]
 }
 
-resource "google_storage_bucket_access_control" "public_rule" {
-  bucket = google_storage_bucket.bucket.name
-  role   = "READER"
-  entity = "allUsers"
-}
-
-resource "google_storage_bucket" "bucket" {
-  name     = "static-content-bucket-alsifjaoiejfdoi"
-  location = "EU"
+module "bucket" {
+  source  = "app.terraform.io/mkaesz-dev/bucket/gcp"
+  version = "1.0.0"
+  bucket_name = "mkaesz-bucket-987654"
 }
 
 output "addr" {
