@@ -8,8 +8,8 @@ terraform {
 }
 
 variable "server_port" {
-  description = "The HTTPD server port"
-  type  = number
+  description = "THe HTTPD port"
+  type        = number
 }
 
 provider "google" {
@@ -21,17 +21,17 @@ data "google_compute_network" "default" {
 }
 
 resource "google_compute_instance" "vm" {
-  name         = "vm0815"
+  name         = "vm"
   machine_type = "n1-standard-2"
   zone         = "europe-west3-a"
-  hostname     = "vm0815.msk.pub"
+  hostname     = "vm.msk.pub"
 
   tags = ["web"]
 
   boot_disk {
     initialize_params {
       image = "ubuntu-2110-impish-v20220505"
-      size  = 12
+      size  = 10
       type  = "pd-ssd"
     }
   }
@@ -43,10 +43,10 @@ resource "google_compute_instance" "vm" {
       // Ephemeral IP
     }
   }
-  
+
   metadata_startup_script = <<EOT
 #!/bin/bash
-echo "Hello, Roche!" > index.html
+echo "Hello, World" > index.html
 nohup busybox httpd -f -p ${var.server_port} &
 EOT
 
@@ -71,12 +71,17 @@ resource "google_compute_firewall" "default" {
   target_tags = ["web"]
 }
 
-module "bucket" {
-  source  = "app.terraform.io/mkaesz-dev/bucket/gcp"
-  version = "1.0.0"
-  bucket_name = "mkaesz-asldjaljfliqejwlf"
+resource "google_storage_bucket_access_control" "public_rule" {
+  bucket = google_storage_bucket.bucket.name
+  role   = "READER"
+  entity = "allUsers"
 }
 
-output "addr" {
+resource "google_storage_bucket" "bucket" {
+  name     = "mkaesz-98hihkhi-static-content-bucket"
+  location = "EU"
+}
+
+output "web" {
   value = "${google_compute_instance.vm.network_interface.0.access_config.0.nat_ip}:${var.server_port}"
 }
