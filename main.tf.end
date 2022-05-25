@@ -8,8 +8,8 @@ terraform {
 }
 
 variable "server_port" {
-  description = "The HTTPD server port"
-  type  = number
+  description = "The server port"
+  type        = number
 }
 
 provider "google" {
@@ -43,10 +43,10 @@ resource "google_compute_instance" "vm" {
       // Ephemeral IP
     }
   }
-  
+
   metadata_startup_script = <<EOT
 #!/bin/bash
-echo "Hello, World!" > index.html
+echo "Hello, Roche" > index.html
 nohup busybox httpd -f -p ${var.server_port} &
 EOT
 
@@ -56,7 +56,7 @@ EOT
 }
 
 resource "google_compute_firewall" "default" {
-  name    = "test-firewall"
+  name    = "firewall"
   network = data.google_compute_network.default.name
 
   allow {
@@ -78,10 +78,10 @@ resource "google_storage_bucket_access_control" "public_rule" {
 }
 
 resource "google_storage_bucket" "bucket" {
-  name     = "static-content-bucket-alsifjaoiejfdoi"
+  name     = "static-content-bucket-msk-0815"
   location = "EU"
 }
 
-output "addr" {
-  value = "${google_compute_instance.vm.network_interface.0.access_config.0.nat_ip}:${var.server_port}"
+output "web" {
+  value = "${google_compute_instance.vm.network_interface[0].access_config[0].nat_ip}:${var.server_port}"
 }
